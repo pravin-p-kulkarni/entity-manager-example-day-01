@@ -10,5 +10,7 @@ public interface EmployeeManagementService {
     void saveEmployeeDetails(Employee employee);
     void deleteEmployee(Long empId);
     List<Employee> listAllEmployee();
+    List<Employee> listAllEmployee(Long[] empIds);
+    List<Employee> listAllEmployeeForDepartment(Long deptId);
     //List<Department> retrieveAllDepartments();
 }

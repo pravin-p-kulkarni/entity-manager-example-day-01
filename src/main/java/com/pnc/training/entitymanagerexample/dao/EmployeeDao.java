@@ -5,9 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.List;
 
 @Repository
@@ -38,6 +36,36 @@ public class EmployeeDao {
     public void delete(Long empId){
         Employee employee = entityManager.find(Employee.class,empId);
         entityManager.remove(employee);
+    }
+
+    /*public List<Employee> getAllEmpFromDept(Long deptId){
+        return entityManager.createQuery("select employee from Employee employee where employee.department.deptId = ?1")
+        .setParameter(1,deptId).getResultList();
+    }*/
+
+    public List<Employee> getAllEmpFromDept(Long deptId){
+
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Employee> criteriaQuery = cb.createQuery(Employee.class);
+        Root<Employee> root = criteriaQuery.from(Employee.class);
+        CriteriaQuery<Employee> all = criteriaQuery.select(root);
+
+        Predicate predicate = cb.equal(root.get("department").get("deptId"),deptId);
+        all.where(predicate);
+        return entityManager.createQuery(all).getResultList();
+    }
+
+    public List<Employee> retrieveAllEmployees(Long[] empIds){
+
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Employee> criteriaQuery = cb.createQuery(Employee.class);
+        Root<Employee> root = criteriaQuery.from(Employee.class);
+        CriteriaQuery<Employee> all = criteriaQuery.select(root);
+
+        Expression<Long> empIdsExp = root.get("empId");
+        Predicate predicate = empIdsExp.in(empIds);
+        all.where(predicate);
+        return entityManager.createQuery(all).getResultList();
     }
 
 }

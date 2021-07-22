@@ -24,6 +24,11 @@ public class EmployeeMgmtController {
     public ResponseEntity<List<Employee>> getAllEmployee(){
         return ResponseEntity.ok(employeeManagementService.listAllEmployee());
     }
+
+    @GetMapping("/employee/retrieve")
+    public ResponseEntity<List<Employee>> getAllEmployee(@RequestParam Long[] empIds){
+        return ResponseEntity.ok(employeeManagementService.listAllEmployee(empIds));
+    }
     @PutMapping("/employee/save")
     public ResponseEntity saveEmployee(@RequestBody Employee employee){
         employeeManagementService.saveEmployeeDetails(employee);
@@ -34,8 +39,8 @@ public class EmployeeMgmtController {
         employeeManagementService.deleteEmployee(empId);
         return ResponseEntity.ok(null);
     }
-    /*@GetMapping("/department/retrieve/all")
-    public ResponseEntity<List<Department>> retrieveAllDepartment(){
-        return ResponseEntity.ok(employeeManagementService.retrieveAllDepartments());
-    }*/
+        @GetMapping("/department/retrieve/employee/{id}")
+    public ResponseEntity<List<Employee>> retrieveAllDepartmentEmployee(@PathVariable("id") Long deptId){
+        return ResponseEntity.ok(employeeManagementService.listAllEmployeeForDepartment(deptId));
+    }
 }

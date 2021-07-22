@@ -37,6 +37,16 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService{
     }
 
     @Override
+    public List<Employee> listAllEmployee(Long[] empIds) {
+        return employeeDao.retrieveAllEmployees(empIds);
+    }
+
+    @Override
+    public List<Employee> listAllEmployeeForDepartment(Long deptId) {
+        return employeeDao.getAllEmpFromDept(deptId);
+    }
+
+    @Override
     public void deleteEmployee(Long empId) {
         employeeDao.delete(empId);
     }
